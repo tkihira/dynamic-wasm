@@ -14,7 +14,8 @@ const startUp = new Promise(async (resolve) => {
             output: output
         }
     };
-    const module = await WebAssembly.instantiateStreaming(fetch('./wasm-simple.wasm'), importObj);
+    const wasmBinary = await fetch('./wasm-simple.wasm');
+    const module = await WebAssembly.instantiate(await wasmBinary.arrayBuffer(), importObj);
     compute = module.instance.exports.compute;
     resolve();
 });
