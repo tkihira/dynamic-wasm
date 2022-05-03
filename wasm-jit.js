@@ -47,12 +47,52 @@ const compose = async (bfCode) => {
     for (const c of [...bfCode]) {
         switch (c) {
             case '>': functionBody.push(0x20, 0x01, 0x41, 0x04, 0x6a, 0x21, 0x01); break;
+                // local.get $pointer
+                // i32.const 4
+                // i32.add
+                // local.set $pointer
+
             case '<': functionBody.push(0x20, 0x01, 0x41, 0x04, 0x6b, 0x21, 0x01); break;
+                // local.get $pointer
+                // i32.const 4
+                // i32.sub
+                // local.set $pointer
+                
             case '+': functionBody.push(0x20, 0x01, 0x20, 0x01, 0x28, 0x02, 0x00, 0x41, 0x01, 0x6a, 0x36, 0x02, 0x00); break;
+                // local.get $pointer
+                // local.get $pointer
+                // i32.load
+                // i32.const 1
+                // i32.add
+                // i32.store
+        
             case '-': functionBody.push(0x20, 0x01, 0x20, 0x01, 0x28, 0x02, 0x00, 0x41, 0x01, 0x6b, 0x36, 0x02, 0x00); break;
+                // local.get $pointer
+                // local.get $pointer
+                // i32.load
+                // i32.const 1
+                // i32.sub
+                // i32.store
             case '.': functionBody.push(0x20, 0x01, 0x28, 0x02, 0x00, 0x10, 0x00); break;
+                // local.get $pointer
+                // i32.load
+                // call $output
+
             case '[': functionBody.push(0x03, 0x40, 0x20, 0x01, 0x28, 0x02, 0x00, 0x45, 0x04, 0x40, 0x05); break;
+                // (loop $loopXXX
+                //     local.get $pointer
+                //     i32.load
+                //     i32.eqz
+                //     (if
+                //         (then)
+                //         (else
+
             case ']': functionBody.push(0x0c, 0x01, 0x0b, 0x0b); break;
+                //             br $loopXXX
+                //         )
+                //     )
+                // )
+
         }
     }
 
