@@ -2,10 +2,9 @@
 <html>
 
 <head>
-    <title>BF simple implementation</title>
+    <title>BF just-in-time implementation</title>
     <script src="bfCode.js"></script>
     <script>
-        // window.bfCode = '++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.';
         onload = async () => {
             const worker = new Worker('./wasm-jit.js');
             const startTime = Date.now();

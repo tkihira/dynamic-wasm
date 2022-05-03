@@ -1,0 +1,2 @@
+# Dynamic wasm creation example
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BF implementations comparison</title>
+    <script src="bfCode.js"></script>
+    <script>
+        const letterCount = 6240;
+
+        let start = () => {
+            document.getElementsByTagName('input')[0].disabled = true;
+            const workerList = ['js-simple', 'js-jit', 'wasm-simple', 'wasm-jit'];
+            let workerCount = workerList.length;
+            for(const workerName of workerList) {
+                const worker = new Worker(`./${workerName}.js`);
+                const startTime = Date.now();
+                worker.postMessage(bfCode);
+                let progressCount = 0;
+                let span = document.getElementById(workerName);
+                worker.onmessage = (e) => {
+                    if(e.data) {
+                        progressCount++;
+                        span.textContent = `${(progressCount * 100 / letterCount).toFixed(2)}%`;
+                    } else {
+                        span.textContent = `Done. time: ${(Date.now() - startTime) / 1000} sec.`;
+                        worker.terminate();
+                        workerCount--;
+                        if(workerCount === 0) {
+                            document.getElementsByTagName('input')[0].disabled = false;
+                        }
+                    }
+                };
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <h1>BF implementations comparison</h1>
+    <hr>
+    <ul>
+        <li>JavaScript Simple implementation: <span id="js-simple"></span></li>
+        <li>JavaScript Just-in-time implementation: <span id="js-jit"></span></li>
+        <li>WebAssembly Simple implementation: <span id="wasm-simple"></span></li>
+        <li>WebAssembly Just-in-time implementation: <span id="wasm-jit"></span></li>
+    </ul>
+    <input type="button" value="start" onclick="start()">
+</body>
+
+</html>
