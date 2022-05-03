@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BF simple implementation</title>
+    <script src="bfCode.js"></script>
+    <script>
+
+        onload = async () => {
+            const worker = new Worker('./simple.js');
+            const startTime = Date.now();
+            worker.postMessage(bfCode);
+            worker.onmessage = (e) => {
+                if (e.data) {
+                    document.getElementsByTagName('pre')[0].textContent += String.fromCharCode(e.data);
+                } else {
+                    document.getElementsByTagName('span')[0].textContent = `time: ${(Date.now() - startTime) / 1000} sec.`;
+                    worker.terminate();
+                }
+            };
+        };
+    </script>
+</head>
+
+<body>
+    <pre></pre>
+    <span></span>
+</body>
+
+</html>
