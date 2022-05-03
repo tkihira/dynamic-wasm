@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BF just-in-time-with-multi-functions implementation</title>
+    <script src="bfCode.js"></script>
+    <script>
+        onload = async () => {
+            const worker = new Worker('./wasm-jit-multi-functions.js');
+            const startTime = Date.now();
+            worker.postMessage(bfCode);
+            worker.onmessage = (e) => {
+                if (e.data) {
+                    document.getElementsByTagName('pre')[0].textContent += String.fromCharCode(e.data);
+                } else {
+                    document.getElementsByTagName('span')[0].textContent = `time: ${(Date.now() - startTime) / 1000} sec.`;
+                    worker.terminate();
+                }
+            };
+        };
+    </script>
+</head>
+
+<body>
+    <pre></pre>
+    <span></span>
+</body>
+
+</html>

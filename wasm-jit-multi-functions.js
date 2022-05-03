@@ -109,8 +109,11 @@ const compose = async (bfCode) => {
         return functionId;
     };
 
-    const rootSubFunctionId = traverse();
-    const composeId = functionCount;
+    const rootSubFunctionId = traverse(); // root sub function will be called from `compose` function
+    const composeId = functionCount; // `compose` function will be exported
+
+
+    // build Function Section binary
 
     let functionSection = [...encodeSignedLeb128FromInt32(functionList.length + 1)];
     // entries: import(js.output) + functionList.length + composer
@@ -123,7 +126,9 @@ const compose = async (bfCode) => {
         ...encodeSignedLeb128FromInt32(functionSection.length),
         ...functionSection
     ];
-    console.log({functionSection});
+
+
+    // build Code Section binary
 
     let codeSection = [];
     for(let i = 0; i < functionList.length; i++) {
@@ -176,9 +181,6 @@ const compose = async (bfCode) => {
                     0x00, // flags: 0 => no maximum field
                     0x01, // initial length: 1
         
-        // 0x03, 0x06, // 0x03 === Function Section, length: 6
-        //     0x05, // 5 entries
-        //         0x01, 0x01, 0x01, 0x01, 0x02, // TODO: ToBeUpdated
         ...functionSection,
         
         0x07, 0x0a + composeFunctionIdLeb128.length, // 0x07 === Export Section, length: 11
@@ -187,78 +189,8 @@ const compose = async (bfCode) => {
                 0x00, // external_kind === 0: function,
                 ...composeFunctionIdLeb128, // function index, 0x00=>import, 0x01- wasm func, so this means last func
         
-        // 0x0a, 0x92, 0x09, // 0x0a === Code Section, length: xxx TODO
-        //     0x05, // 5 entries TODO
-        //         0xbe, 0x01, // body size, length: xxx TODO
-        //         0x00, // local count === 0
-        //         // CODE
-        //         // 0x0b, end flag
-        //     //...
-        //         0x10, // body size, length: 16
-        //         0x01, // local_count === 1, 1 entry
-        //             0x02, 0x7f, // 2 same local variables, type === 0x7f: i32
-        //             0x41, 0xb0, 0xea, 0x01, // i32.const 30000
-        //             0x21, 0x01, // local.set 1
-        //             0x20, 0x01, // local.get 1
-        //             0x10, 0x04, // call func_index_4 TODO
-        //             0x21, 0x01, // local.set 1
-        //             0x0b, // end
         ...codeSection
     ];
-
-
-    
-
-    /*// header
-    const header = [
-        0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, // magic word: "\0asm", version 1
-        0x01, 0x0d, // 0x01 === Type Section, length: 13
-            0x03, // 3 entries
-                0x60, 0x01, 0x7f, 0x00, // 0x60 === func, param_count: 1, param_type: i32(0x7f), return_count: 0
-                0x60, 0x01, 0x7f, 0x01, 0x7f, // 0x60 === func, param_count: 1, param_type: i32(0x7f), return_count: 1, return_type: i32(0x7f)
-                0x60, 0x00, 0x00, // 0x60 === func, param_count: 0,  return_count: 0
-        
-        0x02, 0x1a, // 0x02 === Import Section, length: 26
-            0x02, // 2 entries
-                0x02, 0x6a, 0x73, // length:2, "js"
-                0x06, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, // length: 6, "output"
-                0x00, // external_kind === 0 : Function
-                0x00, // function signature === 0 => [i32]: void
-
-                0x02, 0x6a, 0x73, // length:2, "js"
-                0x06, 0x6d, 0x65, 0x6d, 0x6f, 0x72, 0x79, // length: 6, "memory"
-                0x02, // external_kind === 2 : Memory
-                    0x00, // flags: 0 => no maximum field
-                    0x01, // initial length: 1
-        
-        0x03, 0x06, // 0x03 === Function Section, length: 6
-            0x05, // 5 entries
-                0x01, 0x01, 0x01, 0x01, 0x02, // TODO: ToBeUpdated
-        
-        0x07, 0x0b, // 0x07 === Export Section, length: 11
-            0x01, // 1 entry
-                0x07, 0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, // length: 7, "compose"
-                0x00, // external_kind === 0: function,
-                0x05, // function index, 0x00=>import, 0x01-0x05: wasm func, so 0x05 means last func //TODO
-        
-        0x0a, 0x92, 0x09, // 0x0a === Code Section, length: xxx TODO
-            0x05, // 5 entries TODO
-                0xbe, 0x01, // body size, length: xxx TODO
-                0x00, // local count === 0
-                // CODE
-                // 0x0b, end flag
-            //...
-                0x10, // body size, length: 16
-                0x01, // local_count === 1, 1 entry
-                    0x02, 0x7f, // 2 same local variables, type === 0x7f: i32
-                    0x41, 0xb0, 0xea, 0x01, // i32.const 30000
-                    0x21, 0x01, // local.set 1
-                    0x20, 0x01, // local.get 1
-                    0x10, 0x04, // call func_index_4 TODO
-                    0x21, 0x01, // local.set 1
-                    0x0b, // end
-    ];
-    */
 
     // compile the wasm binary just in time
     const wasmBuffer = Uint8Array.from(wasmBinary);

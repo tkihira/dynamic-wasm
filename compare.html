@@ -9,7 +9,7 @@
 
         let start = () => {
             document.getElementsByTagName('input')[0].disabled = true;
-            const workerList = ['js-simple', 'js-jit', 'wasm-simple', 'wasm-jit'];
+            const workerList = ['js-simple', 'js-jit', 'wasm-simple', 'wasm-jit', 'wasm-jit-multi-functions'];
             let workerCount = workerList.length;
             for(const workerName of workerList) {
                 const worker = new Worker(`./${workerName}.js`);
@@ -17,6 +17,7 @@
                 worker.postMessage(bfCode);
                 let progressCount = 0;
                 let span = document.getElementById(workerName);
+                span.textContent = workerName.indexOf('wasm-') === 0 ? 'compiling...' : 'warming up...';
                 worker.onmessage = (e) => {
                     if(e.data) {
                         progressCount++;
@@ -43,6 +44,7 @@
         <li>JavaScript Just-in-time implementation: <span id="js-jit"></span></li>
         <li>WebAssembly Simple implementation: <span id="wasm-simple"></span></li>
         <li>WebAssembly Just-in-time implementation: <span id="wasm-jit"></span></li>
+        <li>WebAssembly Just-in-time implementation: <span id="wasm-jit-multi-functions"></span></li>
     </ul>
     <input type="button" value="start" onclick="start()">
 </body>
