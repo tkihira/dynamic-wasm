@@ -41,6 +41,7 @@ const compute = () => {
         programCounter++;
     }
 
+
     output(null);
 };
 

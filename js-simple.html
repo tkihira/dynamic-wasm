@@ -7,7 +7,7 @@
     <script>
 
         onload = async () => {
-            const worker = new Worker('./simple.js');
+            const worker = new Worker('./js-simple.js');
             const startTime = Date.now();
             worker.postMessage(bfCode);
             worker.onmessage = (e) => {

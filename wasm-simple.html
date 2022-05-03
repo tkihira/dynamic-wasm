@@ -2,12 +2,11 @@
 <html>
 
 <head>
-    <title>BF just-in-time implementation</title>
+    <title>BF simple implementation</title>
     <script src="bfCode.js"></script>
     <script>
-
         onload = async () => {
-            const worker = new Worker('./js-jit.js');
+            const worker = new Worker('./wasm-simple.js');
             const startTime = Date.now();
             worker.postMessage(bfCode);
             worker.onmessage = (e) => {
