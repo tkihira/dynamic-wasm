@@ -26,7 +26,7 @@ const encodeSignedLeb128FromInt32 = (value) => {
 
 const compose = async (bfCode) => {
 
-    // to understand this code well, please take a look at this document:
+    // to understand this code well, this document will help you understand better:
     // https://github.com/WebAssembly/design/blob/main/BinaryEncoding.md
 
     // header
@@ -121,6 +121,7 @@ const compose = async (bfCode) => {
             output: output
         }
     };
+    // console.log(functionBody.length);
     const module = await WebAssembly.instantiate(wasmBuffer.buffer, importObj);
     return module.instance.exports.compute;
 };

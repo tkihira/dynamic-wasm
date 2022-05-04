@@ -26,7 +26,7 @@ const encodeSignedLeb128FromInt32 = (value) => {
 
 const compose = async (bfCode) => {
 
-    // to understand this code well, please take a look at this document:
+    // to understand this code well, this document will help you understand better:
     // https://github.com/WebAssembly/design/blob/main/BinaryEncoding.md
 
     // firstly, build sub functions using bfCode
@@ -183,11 +183,11 @@ const compose = async (bfCode) => {
         
         ...functionSection,
         
-        0x07, 0x0a + composeFunctionIdLeb128.length, // 0x07 === Export Section, length: 11
+        0x07, 0x0a + composeFunctionIdLeb128.length, // 0x07 === Export Section, length: 10 + composeFunction id length
             0x01, // 1 entry
                 0x07, 0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, // length: 7, "compose"
                 0x00, // external_kind === 0: function,
-                ...composeFunctionIdLeb128, // function index, 0x00=>import, 0x01- wasm func, so this means last func
+                ...composeFunctionIdLeb128, // function index: 0x00=>import, 0x01-last => wasm func, and this is a last func
         
         ...codeSection
     ];
@@ -200,6 +200,7 @@ const compose = async (bfCode) => {
             output: output
         }
     };
+    // console.log(wasmBinary.length, functionList.length + 1);
     const module = await WebAssembly.instantiate(wasmBuffer.buffer, importObj);
     return module.instance.exports.compute;
 };
