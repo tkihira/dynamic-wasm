@@ -234,12 +234,6 @@
                     )
 
 
-
-                    ;; debug
-                    ;;local.get $pc
-                    ;;i32.load8_u
-                    ;;call $output
-
                     local.get $pc
                     i32.const 1
                     i32.add
