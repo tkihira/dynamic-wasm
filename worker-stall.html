@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Worker Stalling on Safari</title>
+    <script src="bfCode.js"></script>
+    <script>
+        const letterCount = 6240;
+
+        let start = () => {
+            document.getElementById('start').disabled = true;
+            const concurrency = Number(document.getElementById('concurrency').value) || 6;
+            const ulElement = document.getElementsByTagName('ul')[0];
+
+            while(ulElement.firstChild) {
+                ulElement.removeChild(ulElement.firstChild);
+            }
+
+            let finishedCount = 0;
+            for(let i = 0; i < concurrency; i++) {
+                const liElement = document.createElement('li');
+                ulElement.appendChild(liElement);
+
+                const worker = new Worker('./worker-stall.js');
+                let progress = 0;
+                worker.onmessage = (e) => {
+                    if(e.data) {
+                        progress++;
+                        liElement.textContent = `${(progress * 100 / letterCount).toFixed(2)}%`;
+                    } else {
+                        liElement.textContent = 'Done';
+                        worker.terminate();
+                        finishedCount++;
+                        if(finishedCount === concurrency) {
+                            document.getElementById('start').disabled = false;
+                        }
+                    }
+                }
+                worker.postMessage(bfCode);
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <h1>Worker Stalling on Safarin</h1>
+    <hr>
+    Workers: <input type="text" value="6" id="concurrency"><br>
+    <input type="button" value="start" id='start' onclick="start()">
+    <hr>
+    Status:
+    <ul>
+    </ul>
+    <hr>
+    Go to <a href="./">top</a>.
+</body>
+
+</html>
