@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BF WebAssembly just-in-time implementation (multiple functions)</title>
+    <script src="bfCode.js"></script>
+    <script>
+        onload = async () => {
+            const worker = new Worker('./wasm-jit-multi-functions-optimized.js');
+            const startTime = Date.now();
+            worker.postMessage(bfCode);
+            worker.onmessage = (e) => {
+                if (e.data) {
+                    document.getElementsByTagName('pre')[0].textContent += String.fromCharCode(e.data);
+                } else {
+                    document.getElementsByTagName('span')[0].textContent = `time: ${(Date.now() - startTime) / 1000} sec.`;
+                    worker.terminate();
+                }
+            };
+        };
+    </script>
+</head>
+
+<body>
+    <h1>BF WebAssembly just-in-time implementation (multiple functions)</h1>
+    Source: <a href="https://github.com/tkihira/dynamic-wasm/blob/main/wasm-jit-multi-functions.js" target="_blank">https://github.com/tkihira/dynamic-wasm/blob/main/wasm-jit-multi-functions.js</a>
+    <hr>
+    <pre></pre>
+    <span></span>
+    <hr>
+    Go to <a href="./">top</a>.
+</body>
+
+</html>
