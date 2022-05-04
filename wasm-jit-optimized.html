@@ -2,11 +2,11 @@
 <html>
 
 <head>
-    <title>BF WebAssembly just-in-time implementation (multiple functions) : optimized</title>
+    <title>BF WebAssembly just-in-time implementation (one function) : optimized</title>
     <script src="bfCode.js"></script>
     <script>
         onload = async () => {
-            const worker = new Worker('./wasm-jit-multi-functions-optimized.js');
+            const worker = new Worker('./wasm-jit-optimized.js');
             const startTime = Date.now();
             worker.postMessage(bfCode);
             worker.onmessage = (e) => {
@@ -22,8 +22,8 @@
 </head>
 
 <body>
-    <h1>BF WebAssembly just-in-time implementation (multiple functions) : optimized</h1>
-    Source: <a href="https://github.com/tkihira/dynamic-wasm/blob/main/wasm-jit-multi-functions.js" target="_blank">https://github.com/tkihira/dynamic-wasm/blob/main/wasm-jit-multi-functions.js</a>
+    <h1>BF WebAssembly just-in-time implementation (one function) : optimized</h1>
+    Source: <a href="https://github.com/tkihira/dynamic-wasm/blob/main/wasm-jit.js" target="_blank">https://github.com/tkihira/dynamic-wasm/blob/main/wasm-jit.js</a>
     <hr>
     <pre></pre>
     <span></span>

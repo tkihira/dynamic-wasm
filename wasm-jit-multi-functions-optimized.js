@@ -90,7 +90,7 @@ const compose = async (bfCode) => {
                 case '-':
                 {
                     let counter = 1;
-                    while(bfCode[p] === '+') {
+                    while(bfCode[p] === '-') {
                         counter++;
                         p++;
                     }
