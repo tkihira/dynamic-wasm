@@ -7,6 +7,7 @@
     <script>
         onload = async () => {
             const worker = new Worker('./wasm-jit-multi-functions.js');
+            window.worker = worker; // avoid Safari's bug: https://bugs.webkit.org/show_bug.cgi?id=240062
             const startTime = Date.now();
             worker.postMessage(bfCode);
             worker.onmessage = (e) => {
