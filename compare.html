@@ -9,7 +9,7 @@
 
         let start = () => {
             document.getElementsByTagName('input')[0].disabled = true;
-            const workerList = ['js-simple', 'js-jit', 'js-jit-multi-functions', 'wasm-simple', 'wasm-jit', 'wasm-jit-multi-functions'];
+            const workerList = ['js-simple', 'js-dcc', 'js-dcc-multi-functions', 'wasm-simple', 'wasm-dcc', 'wasm-dcc-multi-functions'];
             window.workerList = []; // avoid Safari's bug: https://bugs.webkit.org/show_bug.cgi?id=240062
             let workerCount = workerList.length;
             for(const workerName of workerList) {
@@ -43,11 +43,11 @@
     <hr>
     <ul>
         <li>BF JavaScript simple implementation: <span id="js-simple"></span></li>
-        <li>BF JavaScript just-in-time implementation (single function): <span id="js-jit"></span></li>
-        <li>BF JavaScript just-in-time implementation (multiple functions): <span id="js-jit-multi-functions"></span></li>
+        <li>BF JavaScript dynamic-code-creation implementation (single function): <span id="js-dcc"></span></li>
+        <li>BF JavaScript dynamic-code-creation implementation (multiple functions): <span id="js-dcc-multi-functions"></span></li>
         <li>BF WebAssembly simple implementation: <span id="wasm-simple"></span></li>
-        <li>BF WebAssembly just-in-time implementation (single function): <span id="wasm-jit"></span></li>
-        <li>BF WebAssembly just-in-time implementation (multiple functions): <span id="wasm-jit-multi-functions"></span></li>
+        <li>BF WebAssembly dynamic-code-creation implementation (single function): <span id="wasm-dcc"></span></li>
+        <li>BF WebAssembly dynamic-code-creation implementation (multiple functions): <span id="wasm-dcc-multi-functions"></span></li>
     </ul>
     <input type="button" value="start" onclick="start()">
     <hr>

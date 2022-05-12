@@ -2,12 +2,11 @@
 <html>
 
 <head>
-    <title>BF JavaScript just-in-time implementation (multiple functions)</title>
+    <title>BF WebAssembly dynamic-code-creation implementation (multiple functions)</title>
     <script src="bfCode.js"></script>
     <script>
-
         onload = async () => {
-            const worker = new Worker('./js-jit-multi-functions.js');
+            const worker = new Worker('./wasm-dcc-multi-functions.js');
             window.worker = worker; // avoid Safari's bug: https://bugs.webkit.org/show_bug.cgi?id=240062
             const startTime = Date.now();
             worker.postMessage(bfCode);
@@ -24,8 +23,8 @@
 </head>
 
 <body>
-    <h1>BF JavaScript just-in-time implementation (multipule functions)</h1>
-    Source: <a href="https://github.com/tkihira/dynamic-wasm/blob/main/js-jit-multi-functions.js" target="_blank">https://github.com/tkihira/dynamic-wasm/blob/main/js-jit-multi-functions.js</a>
+    <h1>BF WebAssembly dynamic-code-creation implementation (multiple functions)</h1>
+    Source: <a href="https://github.com/tkihira/dynamic-wasm/blob/main/wasm-dcc-multi-functions.js" target="_blank">https://github.com/tkihira/dynamic-wasm/blob/main/wasm-dcc-multi-functions.js</a>
     <hr>
     <pre></pre>
     <span></span>
